@@ -30,7 +30,7 @@ export default async function auth(req: any, res: any) {
                     // )
 
                     await siwe.validate(credentials?.signature || "")
-                    
+
                     return {
                         id: siwe.address,
                     }

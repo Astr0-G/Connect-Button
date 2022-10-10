@@ -23,7 +23,7 @@ export default function Home() {
             <div>
                 <nav className={styles.navBar}>
                     <img src="https://preview.redd.it/t3ipyw3enu771.png?auto=webp&s=6d0ed817989d3328d4765d8563f9ed61dbf32aad" />
-                    <ConnectButton />
+                    {!address ? (<div/>) : (<ConnectButton />)}
                 </nav>
             </div>
             {!address ? (<Hero />) : (<Dashboard />)}
