@@ -1,6 +1,10 @@
 import "../styles/globals.css"
 import { WagmiConfig, configureChains, createClient, chain } from "wagmi"
 import { alchemyProvider, infuraProvider } from "wagmi/providers/infura"
+import { RainbowKitSiweNextAuthProvider } from "@rainbow-me/rainbowkit-siwe-next-auth"
+import { SessionProvider } from "next-auth/react"
+import { AppProps } from "next/app"
+import { MoralisProvider } from "react-moralis"
 import {
     getDefaultWallets,
     RainbowKitProvider,
@@ -65,19 +69,29 @@ const WagmiClient = createClient({
 function MyApp({ Component, pageProps }) {
     return (
         <div>
-            <WagmiConfig client={WagmiClient}>
-                <RainbowKitProvider
-                    chains={chains}
-                    theme={darkTheme({
-                        accentColor: "#e49d3f",
-                        accentColorForeground: "white",
-                        borderRadius: "large",
-                        fontStack: "system",
-                    })}
-                >
-                    <Component {...pageProps} name="Access-Control-Allow-Origin" value="*" />
-                </RainbowKitProvider>
-            </WagmiConfig>
+            <MoralisProvider initializeOnMount={false}>
+                <WagmiConfig client={WagmiClient}>
+                    <SessionProvider refetchInterval={0} session={pageProps.session}>
+                        <RainbowKitSiweNextAuthProvider>
+                            <RainbowKitProvider
+                                chains={chains}
+                                theme={darkTheme({
+                                    accentColor: "#f542f2",
+                                    accentColorForeground: "white",
+                                    borderRadius: "large",
+                                    fontStack: "system",
+                                })}
+                            >
+                                <Component
+                                    {...pageProps}
+                                    name="Access-Control-Allow-Origin"
+                                    value="*"
+                                />
+                            </RainbowKitProvider>
+                        </RainbowKitSiweNextAuthProvider>
+                    </SessionProvider>
+                </WagmiConfig>
+            </MoralisProvider>
         </div>
     )
 }
