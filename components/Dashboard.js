@@ -1,8 +1,24 @@
 import Image from "next/image"
 import { useState } from "react"
 import styles from "../styles/Dashbaord.module.css"
-import { ConnectButton } from "@rainbow-me/rainbowkit"
+import tokenContract from "../contracts/contract.json"
+import {
+    useAccount,
+    useConnect,
+    useContract,
+    useContractRead,
+    useContractWrite,
+    useNetwork,
+    useWaitForTransaction,
+} from "wagmi"
 export default function Dashboard() {
+    const CONTRACT_ADDRESS = "0xAfCF939f2870fc82920058b147A8ff4db98803a5"
+    const [supplyData, setSupplyData] = useState(0)
+
+    const { address } = useAccount()
+    const { chains } = useNetwork()
+    const { data: signerData } = useSigner()
+
     ///image
     const [image, setImage] = useState(null)
     const [createObjectURL, setCreateObjectURL] = useState(null)

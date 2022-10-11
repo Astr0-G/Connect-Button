@@ -43,7 +43,6 @@ const connectors = connectorsForWallets([
         groupName: "Recommended",
         wallets: [
             metaMaskWallet({ chains }),
-            walletConnectWallet({ chains }),
             coinbaseWallet({ chains }),
             trustWallet({ chains }),
             braveWallet({ chains }),
@@ -52,6 +51,7 @@ const connectors = connectorsForWallets([
     {
         groupName: "Others",
         wallets: [
+            walletConnectWallet({ chains }),
             ledgerWallet({ chains }),
             argentWallet({ chains }),
             omniWallet({ chains }),

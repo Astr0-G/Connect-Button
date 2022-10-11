@@ -15,17 +15,17 @@ export default function Home() {
     return (
         <div>
             <Head>
-                <title>NFT MarketPlace</title>
+                <title>Signet</title>
                 <meta name="description" content="2" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
             <div>
                 <nav className={styles.navBar}>
                     <img src="https://preview.redd.it/t3ipyw3enu771.png?auto=webp&s=6d0ed817989d3328d4765d8563f9ed61dbf32aad" />
-                    {!address ? (<div/>) : (<ConnectButton />)}
+                    {!address ? <div /> : <ConnectButton />}
                 </nav>
             </div>
-            {!address ? (<Hero />) : (<Dashboard />)}
+            {!address ? <Hero /> : <Dashboard />}
         </div>
     )
 }
