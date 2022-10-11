@@ -27,24 +27,29 @@ export default function Dashboard() {
     }
     ///image
     return (
-        <div className="absolute bottom-5 right-5 items-center space-y-2">
-            <div className="  grid grid-cols-2 place-content-center h-48 caret-gray-700">
+        <div className="absolute bottom-5 right-5 items-center space-y-8">
+            <div className=" flex items-center place-content-center h-48 caret-gray-700">
                 <textarea
-                    className="border-2 border-rounded border-black"
+                    className="border-2 border-rounded rounded-lg border-solid border-black"
                     placeholder="What,s your maind"
                     cols="50"
                     rows="10"
                 ></textarea>{" "}
                 <br />
-            </div>
-            <div className="border-white space-x-6">
                 {!image ? (
                     <img src={createObjectURL} />
                 ) : (
-                    <img src={createObjectURL} width="300" height="300" />
+                    <img
+                        className="border-2 border-rounded rounded-lg border-solid border-black"
+                        src={createObjectURL}
+                        width="244"
+                        height="244"
+                    />
                 )}
+            </div>
+            <div className="border-white space-x-20">
                 <h4 className={styles.button}>
-                    <input type="file" id="upload" hidden onClick={uploadToClient} />
+                    <input type="file" id="upload" hidden onChange={uploadToClient} />
                     <label for="upload">Choose file</label>
                 </h4>
                 <button className={styles.button} type="submit" onClick={uploadToServer}>
