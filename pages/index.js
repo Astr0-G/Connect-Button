@@ -1,7 +1,6 @@
 import Head from "next/head"
 import styles from "../styles/Home.module.css"
 import Dashboard from "../components/Dashboard"
-import { StyleRegistry } from "styled-jsx"
 import Hero from "../components/welcome"
 import { ConnectButton } from "@rainbow-me/rainbowkit"
 import { signIn, useSession } from "next-auth/react"
