@@ -1,8 +1,9 @@
 import Image from "next/image"
 import { useState } from "react"
 import styles from "../styles/Dashbaord.module.css"
-import contract from "../constants/abi.json"
+import creatorcontract from "../constants/abi.json"
 import {
+    usePrepareContractWrite,
     useAccount,
     useConnect,
     useContract,
@@ -17,32 +18,25 @@ export default function Dashboard() {
     const { address } = useAccount()
     const user = address
     const { chains } = useNetwork()
-
-    const { data: CollectionOwned } = useContractRead({
-        addressOrName: contract.address,
-        contractInterface: contract.abi,
+    const contractRead = useContractRead({
+        addressOrName: creatorcontract.address,
+        contractInterface: creatorcontract.abi,
+        chains: 5,
         functionName: "getOwnerNumContractOfCopyRight",
         watch: true,
         args: user,
     })
-    console.log(CollectionOwned)
-    const numOfOwn = CollectionOwned.toString()
-    const {
-        data: mintData,
-        write: Create,
-        isLoading: isMintLoading,
-        isSuccess: isMintStarted,
-        error: mintError,
-    } = useContractWrite({
-        addressOrName: contract.address,
-        contractInterface: contract.abi,
+    const numOfOwn = contractRead.data.toString()
+
+    const { config } = usePrepareContractWrite({
+        addressOrName: creatorcontract.address,
+        contractInterface: creatorcontract.abi,
         functionName: "controllorCreateCopyRightCollection",
         args: [results, results],
     })
+    const { data, isLoading, isSuccess, write } = useContractWrite(config)
 
-    const CreateCollection = async () => {
-        await Create()
-    }
+
     // const [supplyData, setSupplyData] = useState(0)
 
     // const { address } = useAccount()
@@ -76,7 +70,7 @@ export default function Dashboard() {
             {numOfOwn == 0 ? (
                 <div className="h-[100vh] bg-black grid items-center justify-items-center text-center opacity-100 relative">
                     <h1 className="text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-bold text-white">
-                        Looks like you don't
+                        Looks like you don't have a message box contract yet, lets create one!
                     </h1>
                     <input
                         type="text"
@@ -88,7 +82,7 @@ export default function Dashboard() {
                     <div class="flex flex-col justify-center items-center">
                         <button
                             className={styles.button1}
-                            onClick={() => CreateCollection()}
+                            onClick={() => write()}
                             disabled={isMintLoading}
                         >
                             Generate
