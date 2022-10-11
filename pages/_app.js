@@ -61,7 +61,7 @@ const connectors = connectorsForWallets([
 ])
 
 const WagmiClient = createClient({
-    autoConnect: true,
+    autoConnect: false,
     connectors,
     provider,
 })
