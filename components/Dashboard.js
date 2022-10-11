@@ -1,7 +1,7 @@
 import Image from "next/image"
 import { useState } from "react"
 import styles from "../styles/Dashbaord.module.css"
-import tokenContract from "../contracts/contract.json"
+import contract from "../constants/abi.json"
 import {
     useAccount,
     useConnect,
@@ -12,12 +12,42 @@ import {
     useWaitForTransaction,
 } from "wagmi"
 export default function Dashboard() {
-    const CONTRACT_ADDRESS = "0xAfCF939f2870fc82920058b147A8ff4db98803a5"
-    const [supplyData, setSupplyData] = useState(0)
+    const [results, setResults] = useState(0)
 
     const { address } = useAccount()
+    const user = address
     const { chains } = useNetwork()
-    const { data: signerData } = useSigner()
+
+    const { data: CollectionOwned } = useContractRead({
+        addressOrName: contract.address,
+        contractInterface: contract.abi,
+        functionName: "getOwnerNumContractOfCopyRight",
+        watch: true,
+        args: user,
+    })
+    console.log(CollectionOwned)
+    const numOfOwn = CollectionOwned.toString()
+    const {
+        data: mintData,
+        write: Create,
+        isLoading: isMintLoading,
+        isSuccess: isMintStarted,
+        error: mintError,
+    } = useContractWrite({
+        addressOrName: contract.address,
+        contractInterface: contract.abi,
+        functionName: "controllorCreateCopyRightCollection",
+        args: [results, results],
+    })
+
+    const CreateCollection = async () => {
+        await Create()
+    }
+    // const [supplyData, setSupplyData] = useState(0)
+
+    // const { address } = useAccount()
+    // const { chains } = useNetwork()
+    // const { data: signerData } = useSigner()
 
     ///image
     const [image, setImage] = useState(null)
@@ -28,7 +58,6 @@ export default function Dashboard() {
             const i = event.target.files[0]
 
             setImage(i)
-            console.log(setImage)
             setCreateObjectURL(URL.createObjectURL(i))
         }
     }
@@ -43,35 +72,61 @@ export default function Dashboard() {
     }
     ///image
     return (
-        <div className="absolute bottom-5 right-5 items-center space-y-8">
-            <div className=" flex items-center place-content-center h-48 caret-gray-700">
-                <textarea
-                    className="border-2 border-rounded rounded-lg border-solid border-black"
-                    placeholder="What,s your maind"
-                    cols="50"
-                    rows="10"
-                ></textarea>{" "}
-                <br />
-                {!image ? (
-                    <img src={createObjectURL} />
-                ) : (
-                    <img
-                        className="border-2 border-rounded rounded-lg border-solid border-black"
-                        src={createObjectURL}
-                        width="244"
-                        height="244"
+        <div>
+            {numOfOwn == 0 ? (
+                <div className="h-[100vh] bg-black grid items-center justify-items-center text-center opacity-100 relative">
+                    <h1 className="text-5xl lg:text-4xl md:text-3xl sm:text-2xl font-bold text-white">
+                        Looks like you don't
+                    </h1>
+                    <input
+                        type="text"
+                        placeholder=" Collection Name"
+                        onChange={(event) => {
+                            setResults(event.target.value)
+                        }}
                     />
-                )}
-            </div>
-            <div className="border-white space-x-20">
-                <h4 className={styles.button}>
-                    <input type="file" id="upload" hidden onChange={uploadToClient} />
-                    <label for="upload">Choose file</label>
-                </h4>
-                <button className={styles.button} type="submit" onClick={uploadToServer}>
-                    Send to server
-                </button>
-            </div>
+                    <div class="flex flex-col justify-center items-center">
+                        <button
+                            className={styles.button1}
+                            onClick={() => CreateCollection()}
+                            disabled={isMintLoading}
+                        >
+                            Generate
+                        </button>
+                    </div>
+                </div>
+            ) : (
+                <div className="absolute bottom-5 right-5 items-center space-y-8">
+                    <div className=" flex items-center place-content-center h-48 caret-gray-700">
+                        <textarea
+                            className="border-2 border-rounded rounded-lg border-solid border-black"
+                            placeholder="What,s your maind"
+                            cols="50"
+                            rows="10"
+                        ></textarea>{" "}
+                        <br />
+                        {!image ? (
+                            <img src={createObjectURL} />
+                        ) : (
+                            <img
+                                className="border-2 border-rounded rounded-lg border-solid border-black"
+                                src={createObjectURL}
+                                width="244"
+                                height="244"
+                            />
+                        )}
+                    </div>
+                    <div className="border-white space-x-20">
+                        <h4 className={styles.button}>
+                            <input type="file" id="upload" hidden onChange={uploadToClient} />
+                            <label for="upload">Choose file</label>
+                        </h4>
+                        <button className={styles.button} type="submit" onClick={uploadToServer}>
+                            Send to server
+                        </button>
+                    </div>
+                </div>
+            )}
         </div>
     )
 }

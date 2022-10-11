@@ -11,7 +11,6 @@ import { useConnect, useDisconnect } from "wagmi"
 
 export default function Home() {
     const { address, isConnected } = useAccount()
-    console.log(address)
     return (
         <div>
             <Head>
