@@ -14,7 +14,7 @@ export default function Home() {
     return (
         <div>
             <Head>
-                <title>Signet</title>
+                <title>Example</title>
                 <meta name="description" content="2" />
                 <link rel="icon" href="/favicon.ico" />
             </Head>
