@@ -1,3 +1,4 @@
+# NextJs Frontend with Rainbowkit Connect Button Setup Example
 ## installation 
    
    ```yarn```   
