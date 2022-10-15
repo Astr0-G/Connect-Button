@@ -1,5 +1,5 @@
 # NextJs Frontend with Rainbowkit Connect Button Setup Example
-## installation 
+## Installation 
    
    ```yarn```   
 ```yarn add @rainbow-me/rainbowkit wagmi ethers```   
